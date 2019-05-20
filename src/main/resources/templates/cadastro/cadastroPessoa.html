@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Tela de Cadastro</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+<link type="text/css" rel="stylesheet" href="/materialize.min.css"  media="screen,projection"/>
+
+<style type="text/css">
+table.striped > tbody > tr:nth-child(odd) {
+    background-color: rgba(158, 154, 154, 0.5);
+}
+
+form input[type=submit]{
+color: white;
+}
+</style>
+</head>
+<body>
+<h3>Spring Boot com Thymeleaf</h3>
+<br/>
+<h5>Cadastro de Pessoa</h5>
+
+<div class="row">
+
+<br/>
+
+<div th:each = "m : ${msg}"> <!-- Puxa a variavel mensagem do controler o o th:each faz uma lista mensagens atribuindo cada objeto
+da variavel mensagem. Fazendo varios elementos tr necessario -->
+
+	<span th:text = "${m}"></span>
+
+</div>
+
+<br/>
+<form class="col s12" action="salvarPessoa" method="post" th:object="${pessoaobj}">
+			<div class="row">
+				<div class="input-fiel col s6">
+					<label for="id">ID</label> <input name="id" th:field="*{id}"
+						readonly="readonly" id="id">
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">account_circle</i> <input
+							id="icon_prefix" type="text" class="validate" name="nome"
+							th:field="*{nome}"> <label for="icon_prefix">Nome:*</label>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="input-field col s6">
+					<i class="material-icons prefix">account_circle</i> <input
+						id="icon_prefix" type="text" class="validate" name="sobrenome"
+						th:field="*{sobrenome}"> <label>Sobrenome:*</label>
+				</div>
+			</div>
+			<label><input class="waves-effect waves-light btn-small"
+				type="submit" value="salvar"></label>
+		</form>
+</div>
+<br/>
+<br/>
+
+	<div class="row">
+		<form action="pesquisarpessoa" method="post" class="col s12">
+			<div class="row">
+				<div class="input-field col s12">
+					<label for="nomepesquisa" class="active">Pesquisa por Nome</label>
+					<input name="nomepesquisa" id="nomepesquisa" class="validate">
+					<input class="waves-effect waves-light btn-small" type="submit"
+						value="Buscar">
+					<a class="waves-effect waves-light btn" href="/listapessoa">Lista de pessoas</a>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<br/>
+<br/>
+	<table class="striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NOME</th>
+				<th>SOBRENOME</th>
+				<th>EDITAR</th>
+				<th>EXCLUIR</th>
+			</tr>
+		</thead>
+		<tr th:each="pessoa: ${pessoas}">
+			<td th:text="${pessoa.id}"></td>
+			<td th:text="${pessoa.nome}"></td>
+			<td th:text="${pessoa.sobrenome}"></td>
+			<td><a
+				th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td> <!-- Faz uma conexao com o banco de dados através da classe definida no controller -->
+			<td><a
+				th:href="@{/removerpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Excluir</a></td>
+		</tr>
+	</table>
+
+	<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+</body>
+</html>
